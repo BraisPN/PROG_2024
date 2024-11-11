@@ -24,24 +24,20 @@ def cifra_cesar(texto: str, desprazamento: int) -> str:
         raise ValueError("Datos introducidos no válidos: 'texto' debe ser una cadena y 'desprazamento' un entero.")
     
     alfabeto = 'abcdefghijklmnopqrstuvwxyz'
-    n = len(alfabeto)
-    
-    # Crear un diccionario de mapeo de cada letra con su desplazamiento
-    mapa_cifrado = {}
-    for i in range(n):
-        # Calculamos la letra desplazada
-        letra_original = alfabeto[i]
-        letra_cifrada = alfabeto[(i + desprazamento) % n]
-        mapa_cifrado[letra_original] = letra_cifrada
+    tamanho = len(alfabeto)
     
     resultado = ""
     
     for char in texto:
-        # Si el carácter está en el alfabeto, lo ciframos; si no, lo dejamos igual
-        if char in mapa_cifrado:
-            resultado += mapa_cifrado[char]
+        # Si el carácter está en el alfabeto, lo ciframos
+        if char in alfabeto:
+            # Encuentra el índice de la letra y aplica el desplazamiento
+            indice_original = alfabeto.index(char)
+            indice_cifrado = (indice_original + desprazamento) % tamanho
+            resultado += alfabeto[indice_cifrado]
         else:
-            resultado += char  # Mantener caracteres que no están en el alfabeto
+            # Mantener caracteres que no están en el alfabeto
+            resultado += char
     
     return resultado
 
