@@ -2,39 +2,57 @@
 # -*- coding: utf-8 -*-
 
 """
-Exercicio 7. Un número de DNI ten o seguinte formato 00000000A. Escribe un script que lle pida ao usuario o seu DNI e comprobe que sexa correcto. 
+Exercicio 8. Queremos realizar un programa que calcule o índice dunha chave para un dicionario utilizando o algoritmo de hashing por folding. 
 
-Para iso sigue os seguintes pasos: Comproba a lonxitude da cadea. Comproba que os 8 primeiros díxitos son números e o último é unha letra maiúscula. 
-
-PISTA: utiliza a táboa do código ASCII. Comproba que a letra introducida é o código de control do DNI.
-
-https://www.interior.gob.es/opencms/es/servicios-al-ciudadano/tramites-y-gestiones/dni/calculo-del-digito-de-control-del-nif-nie/#:~:text=Por%20ejemplo%2C%20si%20el%20n%C3%BAmero,n%C3%BAmeros%20y%20d%C3%ADgito%20de%20control. 
-
-Por último imprime Válido ou Inválido segundo corresponda.
+O programa recibirá en orde os seguintes parámetros: tamaño da táboa, número de división por folding e a chave.
 """
 
 __author__ = "Brais Pose Nieto"
 
-def calcular_indice_hash(tam_tabla, num_divisiones, clave):
-    suma_partes = 0
-    longitud_clave = len(clave)
-    
+def calcular_indice_hash(tam_tabla, num_divisions, chave):
+    """
+    Calcula o índice hash dunha chave empregando o método de folding e valores ASCII.
+
+    O método divide a cadea de caracteres en partes dun tamaño especificado, suma os valores enteiros 
+    ASCII de cada parte e calcula o índice como o resto de dividir a suma total entre o tamaño da táboa.
+
+    Args:
+        tam_tabla (int): Tamaño da táboa hash.
+        num_divisions (int): Número de caracteres en cada división da chave para o folding.
+        chave (str): Chave que se vai converter en índice hash.
+
+    Returns:
+        int: Índice hash calculado para a chave.
+    """
+    # Converte a chave nunha cadea baseada nos seus valores ASCII
+    chave_ascii = ""
+    for char in chave:
+        chave_ascii += str(ord(char))  # Engade o valor ASCII de cada carácter
+
+    suma = 0
+    tam_chave = len(chave_ascii)
+
+    # Calcula a suma empregando os segmentos de num_divisions díxitos
     i = 0
-    while i < longitud_clave:
-        parte = clave[i:i+num_divisiones]
-        suma_partes += int(parte)
-        i += num_divisiones
-    
-    # Calcular el índice como el resto de dividir la suma por el tamaño de la tabla
-    indice = suma_partes % tam_tabla
-    
+    while i < tam_chave:
+        # Obten unha parte da cadea ASCII (de num_divisions díxitos)
+        parte = chave_ascii[i:i+num_divisions]
+
+        # Convert o segmento a un número enteiro e sumámolo
+        suma += int(parte)
+
+        i += num_divisions
+
+    # Calcula o índice como o resto da suma dividido polo tamaño da táboa
+    indice = suma % tam_tabla
     return indice
 
-# Solicitar parámetros al usuario
-tam_tabla = int(input("Introduce el tamaño de la tabla: "))
-num_divisiones = int(input("Introduce el número de divisiones por folding: "))
-clave = input("Introduce la clave: ")
+# Solicita parámetros ao usuario
 
-# Calcular el índice
-indice = calcular_indice_hash(tam_tabla, num_divisiones, clave)
-print(f"El índice de la clave es: {indice}")
+tam_tabla = int(input("Introduce o tamaño da táboa: "))
+num_divisions = int(input("Introduce o número de divisións por folding: "))
+chave = input("Introduce a chave: ")
+
+# Calcula o índice
+indice = calcular_indice_hash(tam_tabla, num_divisions, chave)
+print(f"O índice da chave é: {indice}")
